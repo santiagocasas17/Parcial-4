@@ -1,0 +1,53 @@
+class Bus:
+    def __init__(self, ruta, capacidad):
+        self.ruta = ruta
+        self.capacidad = capacidad
+        self.pasajeros = 0
+
+    def recoger_pasajeros(self, cantidad):
+        if cantidad > 0 and self.pasajeros + cantidad <= self.capacidad:
+            self.pasajeros += cantidad
+            return f"Bus {self.ruta} recogió {cantidad} pasajeros. Total: {self.pasajeros}/{self.capacidad}."
+        else:
+            return f"Bus {self.ruta} no puede recoger {cantidad} pasajeros. Capacidad máxima: {self.capacidad}."
+
+    def __str__(self):
+        return f"Bus {self.ruta} - Pasajeros: {self.pasajeros}/{self.capacidad}"
+
+
+
+class Estacion:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.pasajeros_esperando = 100  
+
+    def bus_llega(self, bus):
+        if self.pasajeros_esperando > 0:
+            pasajeros_recogidos = min(20, self.pasajeros_esperando, bus.capacidad - bus.pasajeros)
+            self.pasajeros_esperando -= pasajeros_recogidos
+            return bus.recoger_pasajeros(pasajeros_recogidos)
+        else:
+            return f"No hay pasajeros esperando en {self.nombre}."
+
+    def __str__(self):
+        return f"Estación {self.nombre} - Pasajeros esperando: {self.pasajeros_esperando}"
+
+
+
+bus1 = Bus("B74", 50)
+bus2 = Bus("C19", 40)
+estacion1 = Estacion("Portal 80")
+
+
+print(estacion1)  
+print(bus1)  
+print(bus2)  
+
+print("\n--- Llegada de buses a la estación ---")
+print(estacion1.bus_llega(bus1))  
+print(estacion1.bus_llega(bus2))  
+
+print("\n--- Estado final ---")
+print(estacion1)  
+print(bus1)  
+print(bus2)  
